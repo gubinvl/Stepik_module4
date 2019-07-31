@@ -3,7 +3,7 @@ from .pages.login_page import LoginPage
 from .pages.cart_page import CartPage
 import time, pytest
 
-@pytest.mark.login_guest
+@pytest.mark.login
 class TestLoginFromMainPage(object):
 
     @pytest.fixture(scope="function", autouse=True)
@@ -19,6 +19,14 @@ class TestLoginFromMainPage(object):
         self.page.go_to_login_page()
         login_page = LoginPage(browser, browser.current_url)
         login_page.should_be_login_page()
+
+    def test_user_can_to_register(self, browser):
+        self.page.go_to_login_page()
+        login_page = LoginPage(browser, browser.current_url)
+        login_page.should_be_login_page()
+        login_page.register_new_user('gubin@gmail.com', 'gowgow321')
+        time.sleep(30)
+        login_page.should_be_authorized_user()
 
     def test_guest_should_see_login_link(self, browser):
         self.page.should_be_login_link()
